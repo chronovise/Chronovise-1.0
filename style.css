@@ -1,0 +1,172 @@
+body{
+  /*background-image: linear-gradient(#F0F2F0, #000C40);*/
+  color: #F5F5F5;
+}
+
+#add-button{
+  height: 40px;
+  width: 80px;
+  outline: none;
+}
+
+#box{
+  width:300px;
+  height:400px;
+}
+
+#top{
+  width:300px;
+  height:64px;
+  /*border-bottom-color: black;*/
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  align-self: left;
+}
+
+#title{
+  /*color: #ffc9cf;*/
+  font-weight = bold;
+  color: #ffa332;
+  font-size: 25px;
+  padding-top: 14px;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+}
+
+.forchrome{
+  color: #3cba54;
+  font-size: 20px;
+  padding-left: 0px;
+  padding-top: 14px;
+  font-family: 'Quicksand', sans-serif;
+
+}
+
+.regfont{
+  /*color: #ffc9cf;*/
+
+  color: #000000;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  padding-top: 14px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.column {
+    display:inline-block;
+    float: left;
+    width: 50%;
+}
+
+#content{
+  width: 250;
+  margin: auto;
+}
+
+
+.button {
+    display: block;
+    background-color: #ffab44;
+    min-width: 120px;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex // define a flex container
+    flex-direction: column; // arrange items in column
+    justify-content: center; // align vertically center
+    margin-left: 100px;
+    vertical-align: middle;
+}
+
+.button:hover {
+    background-color: #c98736;
+    color: white;
+}
+
+.buttonedit {
+    display: block;
+    background-color: #ffcd91;
+    min-width: 120px;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    display: flex // define a flex container
+    flex-direction: column; // arrange items in column
+    justify-content: center; // align vertically center
+    margin-left: 100px;
+    vertical-align: middle;
+}
+
+
+.buttonedit:hover {
+    background-color: #ffc277 ;
+    color: white;
+}
+.button1 {
+}
+
+.button2 {
+}
+
+.button3 {
+}
+
+.button4 {
+}
+
+#save{}
+
+.buttonE{
+ display:inline-block;
+ padding:0.35em 1.2em;
+ border:0.1em solid #FFFFFF;
+ margin:0 0.3em 0.3em 0;
+ border-radius:0.12em;
+ box-sizing: border-box;
+ text-decoration:none;
+ font-weight:300;
+ color:#FFFFFF;
+ text-align:center;
+ transition: all 0.2s;
+}
+
+.spanspecial{
+  font-size: 0;
+}
+
+.innerspan{
+  font-size:25px;
+}
+
+.line{
+  width: 112px;
+  height: 47px;
+  border-bottom: 1px solid black;
+position: absolute;
+}
+
+.bottomfont{
+  color: #000000;
+  font-style: italic;
+  font-size: 15px;
+  text-align: center;
+  padding-top: 14px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+a{
+  text-decoration = none;
+}
