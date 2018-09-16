@@ -10,15 +10,15 @@ chrome.storage.sync.get(["work"], function(result){
 });
 
 chrome.storage.sync.get(['home'], function(result){
-    work = result.home.split("\n");
+    home = result.home.split("\n");
 });
 
 chrome.storage.sync.get(['school'], function(result){
-    work = result.school.split("\n");
+    school = result.school.split("\n");
 });
 
 chrome.storage.sync.get(['travel'], function(result){
-    work = result.travel.split("\n");
+    travel = result.travel.split("\n");
 });
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function openWebsite(e){
-  chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
+    chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
 }
 
 function workstatus(e){
@@ -86,8 +86,6 @@ function revertWork(e){
   }
 }
 
-
-
 function travelStatus(e){
 
   var myNode = document.getElementById("content");
@@ -104,18 +102,40 @@ function travelStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id", "travelarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<travel.length;i++){
     x = document.createTextNode(travel[i]+"\n");
-
     area.appendChild(x);
   }
+
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveTravel").addEventListener('click', revertTravel);
+}
+
+function revertTravel(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById('travelarea').value;
+
+   area = d.split("\n");
+
+   travel = area;
+
+   chrome.storage.sync.set({'travel':d},function(){
+      console.log('Value is set to'+d);
+  });
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
 }
 
 function homeStatus(e){
@@ -134,6 +154,7 @@ function homeStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id", "homearea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
@@ -145,6 +166,28 @@ function homeStatus(e){
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveHome").addEventListener('click', revertHome);
+}
+
+
+function revertHome(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById("homearea").value;
+
+   area = d.split("\n");
+
+   home = area;
+
+   chrome.storage.sync.set({'home':d},function(){
+      console.log('Value is set to'+d);
+  });
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
 }
 
 function schoolStatus(e){
@@ -163,6 +206,7 @@ function schoolStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id","schoolarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
@@ -179,50 +223,14 @@ function schoolStatus(e){
 function revertSchool(e){
    var myNode = document.getElementById("content");
 
-   area = myNode.firstChild.value.split("\n");
+   var d = document.getElementById('schoolarea').value;
+
+   area = d.split("\n");
 
    school = area;
 
-   chrome.storage.sync.set({'school':school},function(){
-      console.log('Value is set to'+school);
-   })
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
-
-function revertHome(e){
-   var myNode = document.getElementById("content");
-
-   area = myNode.firstChild.value.split("\n");
-
-   home = area;
-
-   chrome.storage.sync.set({'home':home},function(){
-      console.log('Value is set to'+home);
-   })
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
-
-function revertTravel(e){
-   var myNode = document.getElementById("content");
-
-   area = myNode.firstChild.value.split("\n");
-
-   travel = area;
-
-   chrome.storage.sync.set({'travel':travel},function(){
-      console.log('Value is set to'+travel);
+   chrome.storage.sync.set({'school':d},function(){
+      console.log('Value is set to'+d);
    })
 
 
@@ -242,7 +250,7 @@ function loadWork(e){
 }
 
 function loadSchool(e){
-  for(i = 0;i<school.length;i++){
+    for(i = 0;i<school.length;i++){
     chrome.tabs.create({url:school[i], selected: false});
   }
 }
