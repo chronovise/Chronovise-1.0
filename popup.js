@@ -5,23 +5,22 @@ var travel = [];
 
 var saveNodes = [];
 
-chrome.storage.sync.get(["work"], function(result){
-    work = result.work.split("\n");
-});
-
 chrome.storage.sync.get(['home'], function(result){
-    home = result.home.split("\n");
-
+  if(result.definedURL!=undefined){
+    home = result;
+  }
 });
 
 chrome.storage.sync.get(['school'], function(result){
-    school = result.school.split("\n");
-
+  if(result.definedURL!=undefined){
+    school = result;
+  }
 });
 
 chrome.storage.sync.get(['travel'], function(result){
-    travel = result.travel.split("\n");
-
+  if(result.definedURL!=undefined){
+    travel = result;
+  }
 });
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function openWebsite(e){
-    chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
+  chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
 }
 
 function workstatus(e){
@@ -62,38 +61,22 @@ function workstatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<work.length;i++){
-    temp = work[i];
-    if(work[i].startsWith("https")){
-        x = document.createTextNode(work[i]+"\n");
-        area.appendChild(x);
-    }else{
-        work.splice(i,1);
-    }
+    x = document.createTextNode(work[i]+"\n");
+    area.appendChild(x);
   }
+
+if(area.value == ""){
+  chrome.storage.sync.get(["work"], function(result){
+    alert(result.work);
+    work = result.work.split("\n");
+    area.append(result.work);
+  });
+}
 
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveWork").addEventListener('click', revertWork);
 }
-
-function revertWork(e){
-   var myNode = document.getElementById("content");
-
-   var d = document.getElementById("workarea").value;
-
-   work = d.split("\n");
-
-   chrome.storage.sync.set({'work': d},function(){
-      console.log('Value is set to'+ d);
-   });
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
-
 function travelStatus(e){
 
   var myNode = document.getElementById("content");
@@ -110,45 +93,18 @@ function travelStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
-  area.setAttribute("id", "travelarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<travel.length;i++){
-      temp = travel[i];
-      if(travel[i].startsWith("https")){
-          x = document.createTextNode(travel[i]+"\n");
-          area.appendChild(x);
-      }else{
-          travel.splice(i,1);
-      }
-  }
+    x = document.createTextNode(travel[i]+"\n");
 
+    area.appendChild(x);
+  }
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveTravel").addEventListener('click', revertTravel);
-}
-
-function revertTravel(e){
-   var myNode = document.getElementById("content");
-
-   var d = document.getElementById('travelarea').value;
-
-   area = d.split("\n");
-
-   travel = area;
-
-   chrome.storage.sync.set({'travel':d},function(){
-      console.log('Value is set to'+d);
-  });
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
 }
 
 function homeStatus(e){
@@ -167,45 +123,17 @@ function homeStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
-  area.setAttribute("id", "homearea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<home.length;i++){
-      temp = home[i];
-      if(home[i].startsWith("https")){
-          x = document.createTextNode(home[i]+"\n");
-          area.appendChild(x);
-      }else{
-          home.splice(i,1);
-      }
+    x = document.createTextNode(home[i]+"\n");
+    area.appendChild(x);
   }
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveHome").addEventListener('click', revertHome);
-}
-
-
-function revertHome(e){
-   var myNode = document.getElementById("content");
-
-   var d = document.getElementById("homearea").value;
-
-   area = d.split("\n");
-
-   home = area;
-
-   chrome.storage.sync.set({'home':d},function(){
-      console.log('Value is set to'+d);
-  });
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
 }
 
 function schoolStatus(e){
@@ -224,19 +152,13 @@ function schoolStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
-  area.setAttribute("id","schoolarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<school.length;i++){
-      temp = school[i];
-      if(school[i].startsWith("https")){
-          x = document.createTextNode(school[i]+"\n");
-          area.appendChild(x);
-      }else{
-          school.splice(i,1);
-      }
+    x = document.createTextNode(school[i]+"\n");
+    area.appendChild(x);
   }
   myNode.append(area);
   myNode.append(node);
@@ -246,14 +168,12 @@ function schoolStatus(e){
 function revertSchool(e){
    var myNode = document.getElementById("content");
 
-   var d = document.getElementById('schoolarea').value;
-
-   area = d.split("\n");
+   area = myNode.firstChild.value.split("\n");
 
    school = area;
 
-   chrome.storage.sync.set({'school':d},function(){
-      console.log('Value is set to'+d);
+   chrome.storage.sync.set({'school':school},function(){
+      console.log('Value is set to'+school);
    })
 
 
@@ -264,40 +184,89 @@ function revertSchool(e){
   }
 }
 
+function revertHome(e){
+   var myNode = document.getElementById("content");
+
+   area = myNode.firstChild.value.split("\n");
+
+   home = area;
+
+   chrome.storage.sync.set({'home':home},function(){
+      console.log('Value is set to'+home);
+   })
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
+}
+
+function revertTravel(e){
+   var myNode = document.getElementById("content");
+
+   area = myNode.firstChild.value.split("\n");
+
+   travel = area;
+
+   chrome.storage.sync.set({'travel':travel},function(){
+      console.log('Value is set to'+travel);
+   })
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
+}
+
+function revertWork(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById("workarea").value;
+
+   work = d.split("\n");
+
+   chrome.storage.sync.set({'work': d},function(){
+      alert('Value is set to'+ d);
+   });
+
+   chrome.storage.sync.get(['work'],function(result){
+     alert(result.data);
+     document.getElementById("workarea") = work.data;
+     alert(document.getElementById("workarea").innerText);
+   })
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
+}
 
 
 function loadWork(e){
   for(i = 0;i<work.length;i++){
-      link = work[i];
-      if(link.startsWith("https")){
-          chrome.tabs.create({url:link, selected: false});
-      }
+    chrome.tabs.create({url:work[i], selected: false});
   }
 }
 
 function loadSchool(e){
-    for(i = 0;i<school.length;i++){
-      link = school[i];
-      if(link.startsWith("https")){
-          chrome.tabs.create({url:link, selected: false});
-      }
+  for(i = 0;i<school.length;i++){
+    chrome.tabs.create({url:school[i], selected: false});
   }
 }
 
 function loadHome(e){
   for(i = 0;i<home.length;i++){
-      link = home[i];
-      if(link.startsWith("https")){
-          chrome.tabs.create({url:link, selected: false});
-      }
+    chrome.tabs.create({url:home[i], selected: false});
   }
 }
 
 function loadTravel(e){
   for(i = 0;i<travel.length;i++){
-      link = travel[i];
-      if(link.startsWith("https")){
-          chrome.tabs.create({url:link, selected: false});
-      }
+    chrome.tabs.create({url:travel[i], selected: false});
   }
 }
