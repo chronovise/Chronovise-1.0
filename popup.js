@@ -11,14 +11,17 @@ chrome.storage.sync.get(["work"], function(result){
 
 chrome.storage.sync.get(['home'], function(result){
     home = result.home.split("\n");
+
 });
 
 chrome.storage.sync.get(['school'], function(result){
     school = result.school.split("\n");
+
 });
 
 chrome.storage.sync.get(['travel'], function(result){
     travel = result.travel.split("\n");
+
 });
 
 document.addEventListener('DOMContentLoaded', function(){
