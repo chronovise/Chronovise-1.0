@@ -62,8 +62,13 @@ function workstatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<work.length;i++){
-    x = document.createTextNode(work[i]+"\n");
-    area.appendChild(x);
+    temp = work[i];
+    if(work[i].startsWith("https")){
+        x = document.createTextNode(work[i]+"\n");
+        area.appendChild(x);
+    }else{
+        work.splice(i,1);
+    }
   }
 
   myNode.append(area);
@@ -111,8 +116,13 @@ function travelStatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<travel.length;i++){
-    x = document.createTextNode(travel[i]+"\n");
-    area.appendChild(x);
+      temp = travel[i];
+      if(travel[i].startsWith("https")){
+          x = document.createTextNode(travel[i]+"\n");
+          area.appendChild(x);
+      }else{
+          travel.splice(i,1);
+      }
   }
 
   myNode.append(area);
@@ -163,8 +173,13 @@ function homeStatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<home.length;i++){
-    x = document.createTextNode(home[i]+"\n");
-    area.appendChild(x);
+      temp = home[i];
+      if(home[i].startsWith("https")){
+          x = document.createTextNode(home[i]+"\n");
+          area.appendChild(x);
+      }else{
+          home.splice(i,1);
+      }
   }
   myNode.append(area);
   myNode.append(node);
@@ -215,8 +230,13 @@ function schoolStatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<school.length;i++){
-    x = document.createTextNode(school[i]+"\n");
-    area.appendChild(x);
+      temp = school[i];
+      if(school[i].startsWith("https")){
+          x = document.createTextNode(school[i]+"\n");
+          area.appendChild(x);
+      }else{
+          school.splice(i,1);
+      }
   }
   myNode.append(area);
   myNode.append(node);
@@ -248,24 +268,36 @@ function revertSchool(e){
 
 function loadWork(e){
   for(i = 0;i<work.length;i++){
-    chrome.tabs.create({url:work[i], selected: false});
+      link = work[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadSchool(e){
     for(i = 0;i<school.length;i++){
-    chrome.tabs.create({url:school[i], selected: false});
+      link = school[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadHome(e){
   for(i = 0;i<home.length;i++){
-    chrome.tabs.create({url:home[i], selected: false});
+      link = home[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadTravel(e){
   for(i = 0;i<travel.length;i++){
-    chrome.tabs.create({url:travel[i], selected: false});
+      link = travel[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
