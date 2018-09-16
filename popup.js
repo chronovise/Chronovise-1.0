@@ -1,3 +1,4 @@
+//authors: Kevin Li, Kevin Li, Ethan Jiang, Pesara Amarasekera
 var work = [];
 var school = [];
 var home = [];
