@@ -5,23 +5,23 @@ var travel = [];
 
 var saveNodes = [];
 
+chrome.storage.sync.get(["work"], function(result){
+    work = result.work.split("\n");
+});
 
 chrome.storage.sync.get(['home'], function(result){
-  if(result.definedURL!=undefined){
-    home = result;
-  }
+    home = result.home.split("\n");
+
 });
 
 chrome.storage.sync.get(['school'], function(result){
-  if(result.definedURL!=undefined){
-    school = result;
-  }
+    school = result.school.split("\n");
+
 });
 
 chrome.storage.sync.get(['travel'], function(result){
-  if(result.definedURL!=undefined){
-    travel = result;
-  }
+    travel = result.travel.split("\n");
+
 });
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function openWebsite(e){
-  chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
+    chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
 }
 
 function workstatus(e){
@@ -62,22 +62,38 @@ function workstatus(e){
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<work.length;i++){
-    x = document.createTextNode(work[i]+"\n");
-    area.appendChild(x);
+    temp = work[i];
+    if(work[i].startsWith("https")){
+        x = document.createTextNode(work[i]+"\n");
+        area.appendChild(x);
+    }else{
+        work.splice(i,1);
+    }
   }
-
-if(area.value == ""){
-  chrome.storage.sync.get(["work"], function(result){
-    alert(result.work);
-    work = result.work.split("\n");
-    area.append(result.work);
-  });
-}
 
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveWork").addEventListener('click', revertWork);
 }
+
+function revertWork(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById("workarea").value;
+
+   work = d.split("\n");
+
+   chrome.storage.sync.set({'work': d},function(){
+      console.log('Value is set to'+ d);
+   });
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
+}
+
 function travelStatus(e){
 
   var myNode = document.getElementById("content");
@@ -94,18 +110,45 @@ function travelStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id", "travelarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<travel.length;i++){
-    x = document.createTextNode(travel[i]+"\n");
-
-    area.appendChild(x);
+      temp = travel[i];
+      if(travel[i].startsWith("https")){
+          x = document.createTextNode(travel[i]+"\n");
+          area.appendChild(x);
+      }else{
+          travel.splice(i,1);
+      }
   }
+
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveTravel").addEventListener('click', revertTravel);
+}
+
+function revertTravel(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById('travelarea').value;
+
+   area = d.split("\n");
+
+   travel = area;
+
+   chrome.storage.sync.set({'travel':d},function(){
+      console.log('Value is set to'+d);
+  });
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
 }
 
 function homeStatus(e){
@@ -124,17 +167,45 @@ function homeStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id", "homearea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<home.length;i++){
-    x = document.createTextNode(home[i]+"\n");
-    area.appendChild(x);
+      temp = home[i];
+      if(home[i].startsWith("https")){
+          x = document.createTextNode(home[i]+"\n");
+          area.appendChild(x);
+      }else{
+          home.splice(i,1);
+      }
   }
   myNode.append(area);
   myNode.append(node);
   document.getElementById("saveHome").addEventListener('click', revertHome);
+}
+
+
+function revertHome(e){
+   var myNode = document.getElementById("content");
+
+   var d = document.getElementById("homearea").value;
+
+   area = d.split("\n");
+
+   home = area;
+
+   chrome.storage.sync.set({'home':d},function(){
+      console.log('Value is set to'+d);
+  });
+
+
+  myNode.removeChild(myNode.firstChild);
+  myNode.removeChild(myNode.firstChild);
+  for(i = 0;i<saveNodes.length;i++){
+    myNode.appendChild(saveNodes[i]);
+  }
 }
 
 function schoolStatus(e){
@@ -153,13 +224,19 @@ function schoolStatus(e){
   node.style.margin = "0px 0px 0px 0px";
 
   var area = document.createElement("textarea");
+  area.setAttribute("id","schoolarea");
   area.setAttribute("rows","13");
   area.setAttribute("cols", "26");
   area.style.margin = "0px 0px 20px 0px";
 
   for(i=0;i<school.length;i++){
-    x = document.createTextNode(school[i]+"\n");
-    area.appendChild(x);
+      temp = school[i];
+      if(school[i].startsWith("https")){
+          x = document.createTextNode(school[i]+"\n");
+          area.appendChild(x);
+      }else{
+          school.splice(i,1);
+      }
   }
   myNode.append(area);
   myNode.append(node);
@@ -169,85 +246,14 @@ function schoolStatus(e){
 function revertSchool(e){
    var myNode = document.getElementById("content");
 
-   area = myNode.firstChild.value.split("\n");
+   var d = document.getElementById('schoolarea').value;
 
-   /*tempCheckWeb = area.split('www.');
-   if(tempCheckWeb[0]==undefined){
-     ("www.").concat(area);
-   }
-
-   tempCheckTransfer = area.split("https://");
-   if(tempCheckTransfer[0]==undefined){
-     ("https://").concat(area);
-   }*/
+   area = d.split("\n");
 
    school = area;
 
-   noWWW = true;
-   noHTTP = true;
-
-   /*Regex problem
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }else{
-       for(var k=0;k<school.length;k++){
-         tempCheckWeb = school[k].split('');
-         for(var l=0;l<('www.').length&&noWWW;l++){
-           if(('www.')[l]!==(tempCheckWeb[8+l])){
-             noWWW = true;
-           }else{
-             noWWW = false;
-           }
-         }
-         if(noWWW){
-           lengthofS = school[k].length;
-           part1 = 'https://www.'
-           part2 = school[k].slice(8,lengthofS);
-           school[k]= part1+part2;
-         }
-       }
-     }
-   }*/
-
-   for(var i=0;i<school.length;i++){
-     tempCheckWeb = school[i].split('');
-     for(var j=0;j<('www.').length&&noWWW;j++){
-       if(('www.')[j]!==(tempCheckWeb[j])){
-         noWWW = true;
-       }else{
-         noWWW = false;
-       }
-     }
-     if(noWWW){
-       school[i] = 'www.'+school[i];
-     }
-   }
-
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }
-   }
-
-   chrome.storage.sync.set({'school':school},function(){
-      console.log('Value is set to'+school);
+   chrome.storage.sync.set({'school':d},function(){
+      console.log('Value is set to'+d);
    })
 
 
@@ -258,278 +264,40 @@ function revertSchool(e){
   }
 }
 
-function revertHome(e){
-   var myNode = document.getElementById("content");
-
-   area = myNode.firstChild.value.split("\n");
-
-   home = area;
-
-   noWWW = true;
-   noHTTP = true;
-
-   /*Regex problem
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }else{
-       for(var k=0;k<school.length;k++){
-         tempCheckWeb = school[k].split('');
-         for(var l=0;l<('www.').length&&noWWW;l++){
-           if(('www.')[l]!==(tempCheckWeb[8+l])){
-             noWWW = true;
-           }else{
-             noWWW = false;
-           }
-         }
-         if(noWWW){
-           lengthofS = school[k].length;
-           part1 = 'https://www.'
-           part2 = school[k].slice(8,lengthofS);
-           school[k]= part1+part2;
-         }
-       }
-     }
-   }*/
-
-   for(var i=0;i<school.length;i++){
-     tempCheckWeb = school[i].split('');
-     for(var j=0;j<('www.').length&&noWWW;j++){
-       if(('www.')[j]!==(tempCheckWeb[j])){
-         noWWW = true;
-       }else{
-         noWWW = false;
-       }
-     }
-     if(noWWW){
-       school[i] = 'www.'+school[i];
-     }
-   }
-
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }
-   }
-
-   chrome.storage.sync.set({'home':home},function(){
-      console.log('Value is set to1'+home);
-   })
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
-
-function revertTravel(e){
-   var myNode = document.getElementById("content");
-
-   area = myNode.firstChild.value.split("\n");
-
-   travel = area;
-
-   noWWW = true;
-   noHTTP = true;
-
-   /*Regex problem
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }else{
-       for(var k=0;k<school.length;k++){
-         tempCheckWeb = school[k].split('');
-         for(var l=0;l<('www.').length&&noWWW;l++){
-           if(('www.')[l]!==(tempCheckWeb[8+l])){
-             noWWW = true;
-           }else{
-             noWWW = false;
-           }
-         }
-         if(noWWW){
-           lengthofS = school[k].length;
-           part1 = 'https://www.'
-           part2 = school[k].slice(8,lengthofS);
-           school[k]= part1+part2;
-         }
-       }
-     }
-   }*/
-
-   for(var i=0;i<school.length;i++){
-     tempCheckWeb = school[i].split('');
-     for(var j=0;j<('www.').length&&noWWW;j++){
-       if(('www.')[j]!==(tempCheckWeb[j])){
-         noWWW = true;
-       }else{
-         noWWW = false;
-       }
-     }
-     if(noWWW){
-       school[i] = 'www.'+school[i];
-     }
-   }
-
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }
-   }
-
-   chrome.storage.sync.set({'travel':travel},function(){
-      console.log('Value is set to5'+travel);
-   })
-
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
-
-function revertWork(e){
-   var myNode = document.getElementById("content");
-
-   var d = document.getElementById("workarea").value;
-
-   work = d.split("\n");
-
-   noWWW = true;
-   noHTTP = true;
-
-   /*Regex problem
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }else{
-       for(var k=0;k<school.length;k++){
-         tempCheckWeb = school[k].split('');
-         for(var l=0;l<('www.').length&&noWWW;l++){
-           if(('www.')[l]!==(tempCheckWeb[8+l])){
-             noWWW = true;
-           }else{
-             noWWW = false;
-           }
-         }
-         if(noWWW){
-           lengthofS = school[k].length;
-           part1 = 'https://www.'
-           part2 = school[k].slice(8,lengthofS);
-           school[k]= part1+part2;
-         }
-       }
-     }
-   }*/
-
-   for(var i=0;i<school.length;i++){
-     tempCheckWeb = school[i].split('');
-     for(var j=0;j<('www.').length&&noWWW;j++){
-       if(('www.')[j]!==(tempCheckWeb[j])){
-         noWWW = true;
-       }else{
-         noWWW = false;
-       }
-     }
-     if(noWWW){
-       school[i] = 'www.'+school[i];
-     }
-   }
-
-   for(var i=0;i<school.length;i++){
-     tempCheckHTTP = school[i].split('');
-     for(var j=0;j<('https://').length&&noHTTP;j++){
-       if(('https://')[j]!==(tempCheckHTTP[j])){
-         noHTTP = true;
-       }else{
-         noHTTP = false;
-       }
-     }
-     if(noHTTP){
-       school[i] = 'https://'+school[i];
-     }
-   }
-
-   chrome.storage.sync.set({'work': d},function(){
-      alert('Value is set to4'+ d);
-   });
-
-   chrome.storage.sync.get(['work'],function(result){
-     alert(result.data);
-     document.getElementById("workarea") = work.data;
-     alert(document.getElementById("workarea").innerText);
-   })
-
-  myNode.removeChild(myNode.firstChild);
-  myNode.removeChild(myNode.firstChild);
-  for(i = 0;i<saveNodes.length;i++){
-    myNode.appendChild(saveNodes[i]);
-  }
-}
 
 
 function loadWork(e){
   for(i = 0;i<work.length;i++){
-    chrome.tabs.create({url:work[i], selected: false});
+      link = work[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadSchool(e){
-  for(i = 0;i<school.length;i++){
-    chrome.tabs.create({url:school[i], selected: false});
+    for(i = 0;i<school.length;i++){
+      link = school[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadHome(e){
   for(i = 0;i<home.length;i++){
-    chrome.tabs.create({url:home[i], selected: false});
+      link = home[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
 
 function loadTravel(e){
   for(i = 0;i<travel.length;i++){
-    chrome.tabs.create({url:travel[i], selected: false});
+      link = travel[i];
+      if(link.startsWith("https")){
+          chrome.tabs.create({url:link, selected: false});
+      }
   }
 }
