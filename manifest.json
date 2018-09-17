@@ -4,9 +4,9 @@
 
   "name": "Chronovise",
 
-  "version": "1.0",
+  "version": "0.0.2",
 
-  "description": "Your life in one click",
+  "description": "Let us do the work",
 
   "permissions": ["storage","tabs","<all_urls>"],
 

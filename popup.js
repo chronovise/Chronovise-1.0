@@ -95,16 +95,24 @@ function status(arr,id){
     myNode.append(area);
     myNode.append(node);
     document.getElementById("save"+id).addEventListener('click', function(){
-        revert(id,arr);
+        revert(id);
     });
 }
 
-function revert(id,arr){
+function revert(id){
     var myNode = document.getElementById("content");
 
     var d = document.getElementById(id+"area").value;
 
-    arr = d.split("\n");
+    if(id == "work"){
+      work = d.split("\n");
+    }else if(id == "home"){
+      home = d.split("\n");
+    }else if(id == "school"){
+      school = d.split("\n");
+    }else if(id == "travel"){
+      travel = d.split("\n");
+    }
 
     chrome.storage.sync.set({id: d},function(){
        console.log('Value is set to'+ d);
@@ -118,5 +126,5 @@ function revert(id,arr){
 }
 
 function openWebsite(e){
-    chrome.tabs.create({url:"Website/chronoviseHome.html", selected: true});
+    chrome.tabs.create({url:"https://chronovise.github.io", selected: true});
 }
